@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Looptronic</title>
+    <style>
+        table {
+            border-spacing: 5px;
+        }
+        td {
+            vertical-align: top;
+        }
+    </style>
+    <script>
+        window.onload = function() {
+            let url = new URL(window.location);
+            let ringId = url.searchParams?.get('id');
+            callAPI(ringId);
+         }
+
+        var callAPI = (ringId)=>{
+            var myHeaders = new Headers();
+            myHeaders.append("Accept", "application/json");
+            var requestOptions = {
+                method: 'GET',
+                headers: myHeaders
+            };
+            // make API call with parameters and use promises to get response
+            fetch("https://vyumvn6ae8.execute-api.us-west-2.amazonaws.com/dev/ring/" + ringId, requestOptions)
+            .then(response => response.json())
+            .then(result => showRing(result))
+            .catch(error => alert(error));
+        }
+
+        var showRing = (ring)=>{
+            document.getElementById("ringId").textContent = ring.ID.S;
+            document.getElementById("name").textContent = ring.Name.S;
+        }
+
+     </script>
+</head>
+<body>
+    <p>Your Looptronic Ring</p>
+        <table>
+            <tr>
+                <td align="right">
+                    <label>Ring ID</label>   
+                </td>
+                <td>
+                    <div id="ringId"/>
+                </td>
+            </tr>
+            <tr>
+                <td align="right">
+                    <label>Name</label>   
+                </td>
+                <td>
+                    <div id="name"/>
+                </td>
+            </tr>       
+            <tr>
+                <td align="right">
+                    <label>Photo</label>   
+                </td>
+                <td>
+                    <img id="photo" width="200"/>
+                </td>
+            </tr>  
+        </table>
+</body>
+</html>
